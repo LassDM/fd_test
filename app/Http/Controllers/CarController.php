@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
 use App\Models\Car;
+use App\Services\CarService;
+use App\Services\ApiJsonService;
 
 class CarController extends Controller
 {
@@ -82,5 +84,25 @@ class CarController extends Controller
     public function destroy(Car $car)
     {
         //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Car  $car
+     * @return \Illuminate\Http\Response
+     */
+    public function getEmptyCar()
+    {
+        return "car";
+        // $car = CarService::getEmptyCar();
+        // if (!$car) {
+        //     return ApiJsonService::answer(
+        //         200,
+        //         [],
+        //         []
+        //     );
+        // }
+        // return $car;
     }
 }

@@ -21,7 +21,7 @@ class CarFactory extends Factory
     {
         return [
             'model' => Str::ucfirst($this->faker->word())." ".Str::ucfirst($this->faker->word()),
-            'sign' => \App\Models\Car::generateRandomSign()
+            'sign' => \App\Services\CarService::generateRandomSign()
         ];
     }
 }

@@ -21,16 +21,4 @@ class Car extends Model
         'sign',
         'occuped_by',
     ];
-
-    /**
-     * For car sign generetion
-     *
-     * @return string
-     */
-    public static function generateRandomSign() {
-        $charset='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        return substr(str_shuffle($charset), 0, 1).
-                mt_rand(100, 999).
-                substr(str_shuffle($charset), 0, 2);
-    }
 }

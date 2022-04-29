@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers;
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\DriverController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +21,9 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['middleware'=>'auth:sanctum'], function(){
-    Route::get('/getCar', 'CarController@show');
-    Route::get('/getDriver', 'DriverController@show');
+Route::group(['middleware'=>'auth_api'], function(){
+    // Route::get('/getEmptyCar', [CarController::class, 'getEmptyCar']);
+    // Route::get('/getCar', 'CarController@show');
+    // Route::get('/getDriver', 'DriverController@show');
 });
+Route::middleware('auth_api')->get('/getEmptyCar', [CarController::class, 'getEmptyCar']);
