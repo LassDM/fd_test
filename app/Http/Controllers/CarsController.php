@@ -96,10 +96,22 @@ class CarsController extends Controller
     /**
      * Бронируем свободную машину
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function bookCar(Request $request)
     {
         return CarService::bookCar($request->input('driver_id'), $request->input('car_id'));
+    }
+
+    /**
+     * Освобождаем занятую машину
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function releaseCar(Request $request)
+    {
+        return CarService::releaseCar($request->input('car_id'));
     }
 }

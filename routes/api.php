@@ -23,4 +23,5 @@ Route::group(['middleware'=>'auth_api'], function(){
     Route::get('/cars', [CarsController::class, 'index']);
     Route::get('/cars/{id}', [CarsController::class, 'show']);
     Route::post('/bookCar', [CarsController::class, 'bookCar']);
+    Route::post('/releaseCar', [CarsController::class, 'releaseCar']);
 });

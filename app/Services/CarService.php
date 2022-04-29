@@ -80,4 +80,20 @@ class CarService
             ]
         );
     }
+
+    /**
+     * Освобождает машину
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public static function releaseCar(int $id) {
+        Car::find($id)->update(['occuped_by'=>null]);
+        $car = Car::find($id);
+        return response()->json(
+            [
+                'car' => $car
+            ]
+        );
+    }
 }
