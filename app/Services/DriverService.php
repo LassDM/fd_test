@@ -26,4 +26,26 @@ class DriverService
     public static function getDriverByID(int $id) {
         return Driver::find($id);
     }
+
+    /**
+     * Возвращает водителей с добавлением их занятости
+     *
+     * @return Driver
+     */
+    public static function getDrivers() {
+        $drivers = Driver::all();
+        $cars = Car::query()->whereNot('occuped_by', null)->get();
+        $workDrivers = [];
+        foreach ($cars as $car) {
+            $workDrivers[] = $car->occuped_by;
+        }
+        foreach ($drivers as $driver) {
+            if (in_array($driver->id, $workDrivers)) {
+                $driver->setAttribute('free', false);
+            } else {
+                $driver->setAttribute('free', true);
+            }
+        }
+        return $drivers;
+    }
 }
