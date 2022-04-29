@@ -2,15 +2,19 @@
 
 namespace App\Services;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Driver;
+use App\Models\Car;
 
 class DriverService
 {
     /**
-     * For car sign generetion
+     * Проверяет, свободен ли водитель
      *
-     * @return string
+     * @param int $id
+     * @return bool
      */
-    public static function generateRandomSign() {
-        return "";
+    public static function isDriverFree(int $id) {
+        return (Car::query()->where('occuped_by', $id)->first() === null) ? true : false;
     }
+
 }

@@ -3,8 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
-use App\Http\Controllers\CarController;
-use App\Http\Controllers\DriverController;
+use App\Http\Controllers\CarsController;
+use App\Http\Controllers\DriversController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +22,10 @@ use App\Http\Controllers\DriverController;
 // });
 
 Route::group(['middleware'=>'auth_api'], function(){
-    // Route::get('/getEmptyCar', [CarController::class, 'getEmptyCar']);
+    Route::get('/cars', [CarsController::class, 'index']);
+    Route::get('/cars/{id}', [CarsController::class, 'show']);
+    Route::post('/bookCar', [CarsController::class, 'bookCar']);
     // Route::get('/getCar', 'CarController@show');
     // Route::get('/getDriver', 'DriverController@show');
 });
-Route::middleware('auth_api')->get('/getEmptyCar', [CarController::class, 'getEmptyCar']);
+// Route::middleware('auth_api')->get('/getEmptyCar', [CarController::class, 'getEmptyCar']);

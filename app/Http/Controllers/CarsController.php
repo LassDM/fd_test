@@ -6,9 +6,10 @@ use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
 use App\Models\Car;
 use App\Services\CarService;
-use App\Services\ApiJsonService;
+use App\Services\DriverService;
+use Illuminate\Http\Request;
 
-class CarController extends Controller
+class CarsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +18,10 @@ class CarController extends Controller
      */
     public function index()
     {
-        //
+        $cars = Car::all();
+        return response()->json([
+            'cars' => $cars
+        ]);
     }
 
     /**
@@ -44,12 +48,15 @@ class CarController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Car  $car
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Car $car)
+    public function show(int $id)
     {
-        //
+        $curCar = CarService::getCarByID($id);
+        return response()->json([
+            'car' => $curCar
+        ]);
     }
 
     /**
@@ -87,22 +94,12 @@ class CarController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Бронируем свободную машину
      *
-     * @param  \App\Models\Car  $car
      * @return \Illuminate\Http\Response
      */
-    public function getEmptyCar()
+    public function bookCar(Request $request)
     {
-        return "car";
-        // $car = CarService::getEmptyCar();
-        // if (!$car) {
-        //     return ApiJsonService::answer(
-        //         200,
-        //         [],
-        //         []
-        //     );
-        // }
-        // return $car;
+        return CarService::bookCar($request->input('driver_id'), $request->input('car_id'));
     }
 }

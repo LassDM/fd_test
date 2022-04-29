@@ -6,7 +6,7 @@ use App\Http\Requests\StoreDriverRequest;
 use App\Http\Requests\UpdateDriverRequest;
 use App\Models\Driver;
 
-class DriverController extends Controller
+class DriversController extends Controller
 {
     /**
      * Display a listing of the resource.
