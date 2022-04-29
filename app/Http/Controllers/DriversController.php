@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDriverRequest;
 use App\Http\Requests\UpdateDriverRequest;
 use App\Models\Driver;
+use App\Services\DriverService;
 
 class DriversController extends Controller
 {
@@ -15,7 +16,10 @@ class DriversController extends Controller
      */
     public function index()
     {
-        //
+        $drivers = Driver::all();
+        return response()->json([
+            'drivers' => $drivers
+        ]);
     }
 
     /**
@@ -42,12 +46,16 @@ class DriversController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Driver  $driver
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Driver $driver)
+    public function show(int $id)
     {
-        //
+        $driver = DriverService::getDriverByID($id);
+        $driver->setAttribute('free', DriverService::isDriverFree($id));
+        return response()->json([
+            'driver' => $driver
+        ]);
     }
 
     /**

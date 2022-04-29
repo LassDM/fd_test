@@ -20,7 +20,7 @@ class CarService
     }
 
     /**
-     * Возвращаем пустую машину
+     * Возвращает пустую машину
      *
      * @return Car
      */
@@ -29,7 +29,7 @@ class CarService
     }
 
     /**
-     * Проверяем, пуста ли машина
+     * Проверяет, пуста ли машина
      *
      * @param int $id
      * @return bool
@@ -39,16 +39,17 @@ class CarService
     }
 
     /**
-     * Возвращаем машину по ее ID
+     * Возвращает машину по ее ID
      *
+     * @param int $id
      * @return Car
      */
-    public static function getCarByID($id) {
+    public static function getCarByID(int $id) {
         return Car::find($id);
     }
 
     /**
-     * Бронируем машину
+     * Бронирует машину
      *
      * @param int $driverId
      * @param int $carId

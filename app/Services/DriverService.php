@@ -17,4 +17,13 @@ class DriverService
         return (Car::query()->where('occuped_by', $id)->first() === null) ? true : false;
     }
 
+    /**
+     * Возвращает водителя по его ID
+     *
+     * @param int $id
+     * @return Driver
+     */
+    public static function getDriverByID(int $id) {
+        return Driver::find($id);
+    }
 }

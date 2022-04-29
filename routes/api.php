@@ -17,15 +17,10 @@ use App\Http\Controllers\DriversController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::group(['middleware'=>'auth_api'], function(){
+    Route::get('/drivers', [DriversController::class, 'index']);
+    Route::get('/drivers/{id}', [DriversController::class, 'show']);
     Route::get('/cars', [CarsController::class, 'index']);
     Route::get('/cars/{id}', [CarsController::class, 'show']);
     Route::post('/bookCar', [CarsController::class, 'bookCar']);
-    // Route::get('/getCar', 'CarController@show');
-    // Route::get('/getDriver', 'DriverController@show');
 });
-// Route::middleware('auth_api')->get('/getEmptyCar', [CarController::class, 'getEmptyCar']);
