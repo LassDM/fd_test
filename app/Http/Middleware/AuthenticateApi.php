@@ -17,12 +17,12 @@ class AuthenticateApi extends Middleware
      */
     protected function authenticate($request, array $guards)
     {
-        $token = $request->query('api_token');
+        $token = $request->query('api_key');
         if (empty($token)) {
-            $token = $request->header('api_token');
+            $token = $request->header('api_key');
         }
         if (empty($token)) {
-            $token = $request->input('api_token');
+            $token = $request->input('api_key');
         }
         if (empty($token)) {
             $token = $request->bearerToken();

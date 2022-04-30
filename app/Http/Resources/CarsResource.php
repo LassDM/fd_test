@@ -4,8 +4,28 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ *     title="CarsResource",
+ *     description="Cars resource",
+ *     @OA\Xml(
+ *         name="CarsResource"
+ *     )
+ * )
+ */
 class CarsResource extends JsonResource
 {
+
+    /**
+     * @OA\Property(
+     *     title="Data",
+     *     description="Data wrapper"
+     * )
+     *
+     * @var \App\Models\Car[]
+     */
+    private $data;
+
     /**
      * Transform the resource into an array.
      *

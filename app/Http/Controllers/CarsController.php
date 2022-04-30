@@ -11,12 +11,45 @@ use Illuminate\Http\Request;
 use App\Http\Resources\CarsResource;
 use App\Services\ApiMessageService;
 
+/**
+ * @OA\Tag(
+ *     name="Автомобили",
+ *     description="API для работы с автомобилями"
+ * )
+ * @OA\PathItem(
+ *      path="/cars",
+ * )
+ */
 class CarsController extends Controller
 {
 
     protected $model = Car::class;
 
     /**
+     * @OA\Get(
+     *      path="/cars",
+     *      operationId="getCarsList",
+     *      tags={"Автомобили"},
+     *      summary="Получить список автомобилей",
+     *      description="Возвращает список автомобилей",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/CarsResource")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *     security={
+     *         {"api_key": {}}
+     *     }
+     *     )
+     *
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -53,6 +86,43 @@ class CarsController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *      path="/cars/{id}",
+     *      operationId="getCarById",
+     *      tags={"Автомобили"},
+     *      summary="Получить информацию об автомобиле",
+     *      description="Возвращает информацию об автомобиле по ID",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="ID автомобиля",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/CarsResource")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *     security={
+     *         {"api_key": {}}
+     *     }
+     * )
+     *
      * Display the specified resource.
      *
      * @param  int $id
@@ -116,6 +186,52 @@ class CarsController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *      path="/bookCar",
+     *      operationId="bookCar",
+     *      tags={"Автомобили"},
+     *      summary="Бронируем автомобиль",
+     *      description="Бронируем автомобиль для указанного пользователя",
+     *      @OA\Parameter(
+     *          name="car_id",
+     *          description="ID автомобиля",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="driver_id",
+     *          description="ID пользователя",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/CarsResource")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *     security={
+     *         {"api_key": {}}
+     *     }
+     * )
+     *
      * Бронируем свободную машину
      *
      * @param \Illuminate\Http\Request $request
@@ -127,6 +243,43 @@ class CarsController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *      path="/releaseCar",
+     *      operationId="releaseCar",
+     *      tags={"Автомобили"},
+     *      summary="Освобождаем автомобиль",
+     *      description="Освобождаем указанный автомобиль",
+     *      @OA\Parameter(
+     *          name="car_id",
+     *          description="ID автомобиля",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/CarsResource")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *     security={
+     *         {"api_key": {}}
+     *     }
+     * )
+     *
      * Освобождаем занятую машину
      *
      * @param \Illuminate\Http\Request $request

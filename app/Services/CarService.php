@@ -4,6 +4,8 @@ namespace App\Services;
 use Illuminate\Database\Eloquent\Model;
 use \Illuminate\Http\Response;
 use App\Models\Car;
+use App\Models\Driver;
+use App\Http\Resources\CarsResource;
 
 class CarService
 {
@@ -56,29 +58,18 @@ class CarService
      * @return \Illuminate\Http\Response
      */
     public static function bookCar($driverId, $carId) {
+        if (!Driver::find($driverId))
+            return ApiMessageService::resultMessage('Пользователь с указанным ID не найден', false, 403);
+        if (!$car = Car::find($carId))
+            return ApiMessageService::resultMessage('Автомобиль с указанным ID не найден', false, 403);
         if (!DriverService::isDriverFree($driverId)) {
-            return response()->json(
-                [
-                    'result' => false,
-                    'message' => 'Указанный водитель ['.$driverId.'] уже занят'
-                ]
-            );
+            return ApiMessageService::resultMessage('Указанный водитель ['.$driverId.'] уже занят');
         }
         if (!CarService::isCarEmpty($carId)) {
-            return response()->json(
-                [
-                    'result' => false,
-                    'message' => 'Указанная машина ['.$carId.'] уже занята'
-                ]
-            );
+            return ApiMessageService::resultMessage('Указанная машина ['.$carId.'] уже занята');
         }
-        Car::find($carId)->update(['occuped_by'=>$driverId]);
-        $car = Car::find($carId);
-        return response()->json(
-            [
-                'car' => $car
-            ]
-        );
+        $car->update(['occuped_by'=>$driverId]);
+        return new CarsResource($car);
     }
 
     /**
@@ -88,12 +79,9 @@ class CarService
      * @return \Illuminate\Http\Response
      */
     public static function releaseCar(int $id) {
-        Car::find($id)->update(['occuped_by'=>null]);
-        $car = Car::find($id);
-        return response()->json(
-            [
-                'car' => $car
-            ]
-        );
+        if (!$car = Car::find($id))
+            return ApiMessageService::resultMessage('Автомобиль с указанным ID не найден', false, 403);
+            $car->update(['occuped_by'=>null]);
+        return new CarsResource($car);
     }
 }

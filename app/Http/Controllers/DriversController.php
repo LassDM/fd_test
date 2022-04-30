@@ -11,12 +11,45 @@ use App\Http\Resources\DriversResource;
 use App\Services\ApiMessageService;
 use \Illuminate\Http\Response;
 
+/**
+ * @OA\Tag(
+ *     name="Пользователи",
+ *     description="API для работы с пользователями"
+ * )
+ * @OA\PathItem(
+ *      path="/drivers",
+ * )
+ */
 class DriversController extends Controller
 {
 
     protected $model = Driver::class;
 
     /**
+     * @OA\Get(
+     *      path="/drivers",
+     *      operationId="getDriversList",
+     *      tags={"Пользователи"},
+     *      summary="Получить список пользователей",
+     *      description="Возвращает список пользователей",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/DriversResource")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *     security={
+     *         {"api_key": {}}
+     *     }
+     *     )
+     *
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -51,6 +84,43 @@ class DriversController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *      path="/drivers/{id}",
+     *      operationId="getDriverById",
+     *      tags={"Пользователи"},
+     *      summary="Получить информацию о пользователе",
+     *      description="Возвращает информацию об указанном пользователе",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="ID пользователя",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/DriversResource")
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *     security={
+     *         {"api_key": {}}
+     *     }
+     * )
+     *
      * Display the specified resource.
      *
      * @param  int $id

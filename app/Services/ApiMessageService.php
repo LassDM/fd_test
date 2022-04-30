@@ -13,12 +13,12 @@ class ApiMessageService
      * @param bool $result
      * @return string
      */
-    public static function resultMessage(string $message, bool $result = false) {
+    public static function resultMessage(string $message, bool $result = false, int $responceCode = 200) {
         return Response()->json([
             'data' => [
                 'result' => $result,
                 'message' => $message
             ]
-        ]);
+        ], $responceCode);
     }
 }
