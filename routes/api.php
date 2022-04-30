@@ -18,6 +18,7 @@ use App\Http\Controllers\DriversController;
 */
 
 Route::group(['middleware'=>'auth_api'], function(){
+    // Route::apiResource('/drivers', DriversController::class);
     Route::get('/drivers', [DriversController::class, 'index']);
     Route::get('/drivers/{id}', [DriversController::class, 'show']);
     Route::get('/cars', [CarsController::class, 'index']);
@@ -25,5 +26,3 @@ Route::group(['middleware'=>'auth_api'], function(){
     Route::post('/bookCar', [CarsController::class, 'bookCar']);
     Route::post('/releaseCar', [CarsController::class, 'releaseCar']);
 });
-
-// test git

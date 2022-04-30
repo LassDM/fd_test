@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDriverRequest;
 use App\Http\Requests\UpdateDriverRequest;
 use App\Models\Driver;
+use App\Models\Car;
 use App\Services\DriverService;
+use App\Http\Resources\DriversResource;
+use \Illuminate\Http\Response;
 
 class DriversController extends Controller
 {
+
+    protected $model = Driver::class;
+
     /**
      * Display a listing of the resource.
      *
@@ -16,10 +22,7 @@ class DriversController extends Controller
      */
     public function index()
     {
-        $drivers = DriverService::getDrivers();
-        return response()->json([
-            'drivers' => $drivers
-        ]);
+        return DriversResource::collection(DriverService::getDrivers());
     }
 
     /**
@@ -40,7 +43,10 @@ class DriversController extends Controller
      */
     public function store(StoreDriverRequest $request)
     {
-        //
+        $driver = Driver::create([
+            'name' => $request->input('name')
+        ]);
+        return new DriversResource($driver);
     }
 
     /**
@@ -53,9 +59,7 @@ class DriversController extends Controller
     {
         $driver = DriverService::getDriverByID($id);
         $driver->setAttribute('free', DriverService::isDriverFree($id));
-        return response()->json([
-            'driver' => $driver
-        ]);
+        return new DriversResource($driver);
     }
 
     /**
@@ -78,17 +82,31 @@ class DriversController extends Controller
      */
     public function update(UpdateDriverRequest $request, Driver $driver)
     {
-        //
+        $driver->update([
+            'name' => $request->input('name')
+        ]);
+        return new DriversResource($driver);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Driver  $driver
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Driver $driver)
+    public function destroy(int $id)
     {
-        //
+        if (Car::query()->where('occuped_by', $id)->first() !== null) {
+            return Response()->json([
+                'data' => [
+                    'result' => false,
+                    'message' => 'Невозможно удалить водителя ['.$id.'], он сейчас за рулем'
+                ]
+            ]);
+        }
+        $driver = Driver::find($id);
+        if ($driver) {
+            $driver->delete();
+        }
     }
 }

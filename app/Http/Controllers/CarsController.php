@@ -8,9 +8,13 @@ use App\Models\Car;
 use App\Services\CarService;
 use App\Services\DriverService;
 use Illuminate\Http\Request;
+use App\Http\Resources\CarsResource;
 
 class CarsController extends Controller
 {
+
+    protected $model = Car::class;
+
     /**
      * Display a listing of the resource.
      *
@@ -18,10 +22,7 @@ class CarsController extends Controller
      */
     public function index()
     {
-        $cars = Car::all();
-        return response()->json([
-            'cars' => $cars
-        ]);
+        return CarsResource::collection(Car::all());
     }
 
     /**
@@ -53,10 +54,8 @@ class CarsController extends Controller
      */
     public function show(int $id)
     {
-        $curCar = CarService::getCarByID($id);
-        return response()->json([
-            'car' => $curCar
-        ]);
+        $car = CarService::getCarByID($id);
+        return new CarsResource($car);
     }
 
     /**

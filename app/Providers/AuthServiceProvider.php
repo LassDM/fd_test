@@ -16,6 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        'App\Models\Driver' => 'App\Policies\DriverPolicy',
     ];
 
     /**
@@ -27,6 +28,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+        //Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 }
