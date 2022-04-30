@@ -11,7 +11,7 @@ use Illuminate\Routing\Controller as BaseController;
  * @OA\Info(
  *      version="1.0.0",
  *      title="Документация к тестовому заданию",
- *      description="<b>Ключ для авторизации:</b> d2h738dh2ud9j27d829deu29e8dyj2j",
+ *      description="<b>Ключ для авторизации:</b> d2h738dh2ud9j27d829deu29e8dyj2j<br/><br/><b>Примечание:</b> ради скорости разработки опущены методы добавления/изменения/удаления сущностей. Таблицы БД заполняются сидерами.",
  *      @OA\Contact(
  *          email="dmitriylasarev@gmail.com"
  *      )
