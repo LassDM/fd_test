@@ -9,6 +9,7 @@ use App\Services\CarService;
 use App\Services\DriverService;
 use Illuminate\Http\Request;
 use App\Http\Resources\CarsResource;
+use App\Services\ApiMessageService;
 
 class CarsController extends Controller
 {
@@ -43,7 +44,12 @@ class CarsController extends Controller
      */
     public function store(StoreCarRequest $request)
     {
-        //
+        $car = Car::create([
+            'model' => $request->input('model'),
+            'sign' => $request->input('sign'),
+            'occuped_by' => null,
+        ]);
+        return new CarsResource($car);
     }
 
     /**
@@ -55,6 +61,8 @@ class CarsController extends Controller
     public function show(int $id)
     {
         $car = CarService::getCarByID($id);
+        if (!$car)
+            return ApiMessageService::resultMessage('Машины с таким id не существует');
         return new CarsResource($car);
     }
 
@@ -73,23 +81,38 @@ class CarsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCarRequest  $request
-     * @param  \App\Models\Car  $car
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCarRequest $request, Car $car)
+    public function update(UpdateCarRequest $request, int $id)
     {
-        //
+        $car = Car::find($id);
+        if (!$car)
+            return ApiMessageService::resultMessage('Машины с таким id не существует');
+        $car->update([
+            'model' => $request->input('model'),
+            'sign' => $request->input('sign'),
+            'occuped_by' => null,
+        ]);
+        return new CarsResource($car);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Car  $car
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Car $car)
+    public function destroy(int $id)
     {
-        //
+        $car = Car::find($id);
+        if ($car && $car->occuped_by === null) {
+            $car->delete();
+            return ApiMessageService::resultMessage('Машина удалена', true);
+        } elseif($car && $car->occuped_by !== null) {
+            return ApiMessageService::resultMessage('Машина ['.$id.'] сейчас используется');
+        }
+        return ApiMessageService::resultMessage('Машины с id ['.$id.'] не существует');
     }
 
     /**

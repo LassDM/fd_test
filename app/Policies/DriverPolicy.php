@@ -18,7 +18,7 @@ class DriverPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class DriverPolicy
      */
     public function view(User $user, Driver $driver)
     {
-        //
+        return true;
     }
 
     /**
@@ -41,7 +41,7 @@ class DriverPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class DriverPolicy
      */
     public function update(User $user, Driver $driver)
     {
-        //
+        return true;
     }
 
     /**
@@ -65,7 +65,7 @@ class DriverPolicy
      */
     public function delete(User $user, Driver $driver)
     {
-        //
+        return true;
     }
 
     /**
@@ -77,7 +77,7 @@ class DriverPolicy
      */
     public function restore(User $user, Driver $driver)
     {
-        //
+        return true;
     }
 
     /**
@@ -89,6 +89,6 @@ class DriverPolicy
      */
     public function forceDelete(User $user, Driver $driver)
     {
-        //
+        return true;
     }
 }

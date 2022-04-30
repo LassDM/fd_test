@@ -8,6 +8,7 @@ use App\Models\Driver;
 use App\Models\Car;
 use App\Services\DriverService;
 use App\Http\Resources\DriversResource;
+use App\Services\ApiMessageService;
 use \Illuminate\Http\Response;
 
 class DriversController extends Controller
@@ -58,6 +59,8 @@ class DriversController extends Controller
     public function show(int $id)
     {
         $driver = DriverService::getDriverByID($id);
+        if (!$driver)
+            return ApiMessageService::resultMessage('Водителя с таким id не существует');
         $driver->setAttribute('free', DriverService::isDriverFree($id));
         return new DriversResource($driver);
     }
@@ -77,11 +80,14 @@ class DriversController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateDriverRequest  $request
-     * @param  \App\Models\Driver  $driver
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDriverRequest $request, Driver $driver)
+    public function update(UpdateDriverRequest $request, int $id)
     {
+        $driver = Driver::find($id);
+        if (!$driver)
+            return ApiMessageService::resultMessage('Водителя с таким id не существует');
         $driver->update([
             'name' => $request->input('name')
         ]);
@@ -97,16 +103,13 @@ class DriversController extends Controller
     public function destroy(int $id)
     {
         if (Car::query()->where('occuped_by', $id)->first() !== null) {
-            return Response()->json([
-                'data' => [
-                    'result' => false,
-                    'message' => 'Невозможно удалить водителя ['.$id.'], он сейчас за рулем'
-                ]
-            ]);
+            return ApiMessageService::resultMessage('Невозможно удалить водителя ['.$id.'], он сейчас за рулем');
         }
         $driver = Driver::find($id);
         if ($driver) {
             $driver->delete();
+            return ApiMessageService::resultMessage('Водитель удален', true);
         }
+        return ApiMessageService::resultMessage('Водителя с id ['.$id.'] не существует');
     }
 }
